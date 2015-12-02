@@ -1,0 +1,5 @@
+package persistence.usuarios;
+
+public interface PessoaRepository {
+	public boolean isDisponivel(String cpf);
+}

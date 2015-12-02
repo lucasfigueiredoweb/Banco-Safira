@@ -1,0 +1,5 @@
+host=localhost
+database=bancosafira
+usuario=postgres
+senha=123456
+porta=5432

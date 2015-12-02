@@ -1,0 +1,30 @@
+package application;
+
+
+import dao.ContaPoupancaBusiness;
+import dao.ContaPoupancaRepository;
+import model.ContaPoupanca;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+		ContaPoupancaRepository crepository = new ContaPoupancaBusiness();
+//		System.out.println(crepository.list());
+		ContaPoupanca c = crepository.getConta("1234");
+		
+		c.creditar(1500.0, false);
+		crepository.atualizar(c);
+//		System.out.println(c);
+//		c.setNumero("1234");
+//		c.setSaldo(250.50);
+//		c.setData(Calendar.getInstance().getTime());
+//		crepository.atualizarConta(c);
+//		
+//		crepository.deletarConta(25);
+		
+	}
+	
+	
+	
+}

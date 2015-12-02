@@ -1,0 +1,8 @@
+package controller;
+
+import util.AlertBox;
+
+public class GenericController {
+	
+	public static AlertBox ab = new AlertBox();
+}

@@ -1,0 +1,19 @@
+package dao;
+
+import java.util.List;
+
+import model.Conta;
+import model.ContaPoupanca;
+
+public interface ContaPoupancaRepository {
+
+	public void salvar(Conta conta);
+
+	public void atualizar(Conta conta);
+
+	public void deletar(int id);
+
+	public List<ContaPoupanca> lista();
+
+	public ContaPoupanca getConta(String numero);
+}

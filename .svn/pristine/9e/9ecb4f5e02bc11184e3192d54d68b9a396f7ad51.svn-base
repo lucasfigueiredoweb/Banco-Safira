@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+   <children>
+      <AnchorPane prefHeight="599.0" prefWidth="760.0">
+         <children>
+            <StackPane prefHeight="400.0" prefWidth="606.0">
+               <children>
+                  <ImageView fitHeight="636.0" fitWidth="819.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/bg.png" />
+                     </image>
+                  </ImageView>
+                  <StackPane prefHeight="417.0" prefWidth="606.0">
+                     <children>
+                        <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
+                           <children>
+                              <ImageView fitHeight="160.0" fitWidth="460.0" layoutX="178.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../images/safira-logo.jpg" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </StackPane>
+                  <StackPane prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <ImageView fitHeight="371.0" fitWidth="385.0" layoutX="215.0" layoutY="159.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../images/panel.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </StackPane>
+                  <StackPane prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" StackPane.alignment="CENTER">
+                           <children>
+                              <TextField fx:id="userField" layoutX="246.0" layoutY="279.0" onAction="#onEnter" prefHeight="25.0" prefWidth="316.0" />
+                              <Text layoutX="248.0" layoutY="263.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CPF" wrappingWidth="60.443359375">
+                                 <font>
+                                    <Font name="Arial" size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text layoutX="247.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Senha" wrappingWidth="46.443359375">
+                                 <font>
+                                    <Font name="Arial" size="14.0" />
+                                 </font>
+                              </Text>
+                              <Button focusTraversable="false" layoutX="248.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleLoginButton" styleClass="btn" stylesheets="@application.css" text="Entrar" textFill="WHITE" />
+                              <ImageView fitHeight="54.0" fitWidth="385.0" layoutX="215.0" layoutY="151.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../images/panel-header.png" />
+                                 </image>
+                              </ImageView>
+                              <Text fill="WHITE" layoutX="245.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOGIN" wrappingWidth="112.443359375">
+                                 <font>
+                                    <Font name="Arial Black" size="18.0" />
+                                 </font>
+                              </Text>
+                              <PasswordField fx:id="passField" layoutX="246.0" layoutY="372.0" onAction="#onEnter" prefHeight="25.0" prefWidth="316.0" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </StackPane>
+               </children>
+            </StackPane>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

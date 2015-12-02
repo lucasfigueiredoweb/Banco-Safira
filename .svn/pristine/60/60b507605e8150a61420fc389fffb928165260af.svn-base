@@ -1,0 +1,102 @@
+package application;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import model.Funcionario;
+import persistence.usuarios.FuncionarioBusiness;
+import persistence.usuarios.FuncionarioRepository;
+
+public class Main {
+
+	public static void main(String[] args) throws ParseException {
+
+//		ClienteRepository crepository = new ClienteBusiness();
+//		ContaCorrenteRepository contaRepository = new ContaCorrenteBusiness();
+		FuncionarioRepository funcRepository = new FuncionarioBusiness();
+		
+		
+//		
+//		System.out.println(crepository.isDisponivel("10858006448"));
+//		
+//		Cliente cliente = new Cliente();
+//		
+//		cliente = crepository.getCliente("10858006448");
+//		
+//		ContaCorrente conta = new ContaCorrente();
+//		conta.setData(Calendar.getInstance().getTime());
+//		conta.setNumero("jesus");
+//		conta.setSaldo(50000.0);
+		
+//		conta = contaRepository.getConta(cliente);
+//		
+//		System.out.println(conta.getNumero());
+//		System.out.println(conta.getId());
+//		System.out.println(conta.getSaldo());
+//		System.out.println(conta.getData());
+		
+//		cliente.setCpf("10858006449");
+//		cliente.setDataNascimento(Calendar.getInstance().getTime());
+//		cliente.setEmail("fernando@.com");
+//		cliente.setNome("Fernando");
+//		cliente.setTaxaFidelidade(1.0);
+//		crepository.salvar(cliente);
+		
+
+//		cliente = crepository.getCliente("10858006448");
+//		
+//		
+//		cliente.setEmail("fernandopetros@gmail.com");
+//		crepository.atualizar(cliente);
+//		
+
+//		cliente = crepository.getCliente("10858006448");
+//
+		Funcionario func = new Funcionario();
+		func.setCpf("00000000000");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		func.setDataNascimento(sdf.parse("00/00/0000"));
+		func.setEmail("admin@admin.com");
+		func.setSenha("admin");
+		func.setNome("Administrador");
+		func.setSalario(0.0);
+		funcRepository.salvar(func);
+//		frepository.deletar(func);
+//		frepository.atualizar(func);
+		
+		
+
+		
+//		frepository.salvar(func);
+		
+		
+		
+//		cliente = crepository.getCliente("10858006448");
+//		
+//		
+//		cliente.setEmail("fernandopetros@gmail.com");
+//		crepository.atualizar(cliente);
+		
+		
+//		crepository.salvar(cliente);
+//		System.out.println(crepository.lista());
+//		crepository.salvar(cliente);
+//		System.out.println(crepository.list());
+//		ContaPoupanca c = crepository.getConta("1234");
+//		c.creditar(1500.0, false);
+//		crepository.atualizar(c);
+//		System.out.println(crepository.getCliente("10858006448"));
+		
+//		System.out.println(c);
+//		c.setNumero("1234");
+//		c.setSaldo(250.50);
+//		c.setData(Calendar.getInstance().getTime());
+//		crepository.atualizar(c);
+//		
+//		crepository.deletarConta(25);
+		
+	}
+	
+	
+	
+}

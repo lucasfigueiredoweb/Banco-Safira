@@ -1,0 +1,82 @@
+package model;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public abstract class Conta extends EntidadeAbstrata {
+
+	private String numero;
+	protected Double saldo;
+	private Date data;
+
+	public void creditar(Double valor, Boolean msg) {
+		saldo += valor;
+		if (msg)
+			System.out.println("Sucesso! Novo Saldo:" + saldo);
+	}
+
+	public void atualiza(Double taxa) {
+		saldo += saldo * taxa;
+	}
+
+	public Boolean debitar(Double valor, Boolean msg) {
+		double aux = saldo;
+		if (saldo - valor < 0) {
+			System.out.println("Saldo Insuficiente!");
+			saldo = aux;
+			return false;
+		} else {
+			saldo -= valor;
+			if (msg)
+				System.out.println("Sucesso! Novo Saldo:" + saldo);
+			return true;
+		}
+	}
+
+	public void transferir(Conta c, Double valor) {
+		if (c != null) {
+			if (debitar(valor, false)) {
+				c.creditar(valor, false);
+				System.out.println("Sucesso!");
+				System.out.println("Seu Saldo: " + saldo);
+			}
+
+		}
+
+	}
+	
+	public String toString(){
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		String texto = "ID: "+this.getId()+" Numero: "+this.getNumero()+" Saldo : "+this.getSaldo()+" Data de Cadastro: "+ sdf.format(this.getData())+"\n" ;
+		return texto;
+	}
+
+	public void extrato() {
+		System.out.println("Seu Saldo é :" + getSaldo());
+	}
+
+	public Double getSaldo() {
+		return saldo;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public void setSaldo(Double saldo) {
+		this.saldo = saldo;
+	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
+}

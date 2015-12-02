@@ -1,0 +1,267 @@
+package persistence.usuarios;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import exception.CpfJaCadastradoException;
+import exception.NenhumaContaCadastradaException;
+import exception.PessoaNaoEncontradaException;
+import model.Cliente;
+import model.Pessoa;
+import util.ConnectionFactory;
+
+public class ClienteBusiness extends PessoaBusiness<Cliente> implements ClienteRepository {
+
+	public void salvar(Cliente cliente) {
+		Connection c = ConnectionFactory.getConnection();
+		PreparedStatement statement = null;
+
+		try {
+
+			if (this.isDisponivel(cliente.getCpf())) {
+				String sql = "INSERT INTO pessoa (nome,cpf,data_nascimento,email) VALUES (?, ?, ?, ?)";
+				statement = c.prepareStatement(sql);
+				statement.setString(1, cliente.getNome());
+				statement.setString(2, cliente.getCpf());
+				statement.setDate(3, new Date(cliente.getDataNascimento().getTime()));
+				statement.setString(4, cliente.getEmail());
+
+				statement.execute();
+				clientePessoa(c,cliente);
+				System.out.println("Cliente salvo com sucesso!");
+
+			} else {
+				throw new CpfJaCadastradoException();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (CpfJaCadastradoException e2) {
+			System.out.println("Cpf ja cadastrado");
+		} finally {
+
+			try {
+				statement.close();
+				c.close();
+			} catch (SQLException e) {
+				System.out.println("Não foi possível fechar a conexão!");
+			}
+		}
+
+	}
+
+	private void clientePessoa(Connection c, Cliente cliente) {
+		Pessoa atual = this.getPessoa(cliente.getCpf());
+		String sql = "INSERT INTO cliente (id_pessoa,taxa_fidelidade) VALUES (" + atual.getId() + ",0)";
+		PreparedStatement statement = null;
+		try {
+
+			statement = c.prepareStatement(sql);
+			statement.execute();
+
+		} catch (SQLException e) {
+			System.out.println("Ocorreu um erro na hora de salvar");
+		} finally {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+
+			}
+		}
+
+	}
+
+	public Cliente getCliente(String cpf) {
+		Connection c = ConnectionFactory.getConnection();
+		String sql = "select cliente.id as id,pessoa.nome as nome,pessoa.cpf as cpf,pessoa.email as email,pessoa.data_nascimento as data_nascimento,cliente.taxa_fidelidade as taxa_fidelidade  from cliente INNER JOIN pessoa ON id_pessoa=pessoa.id where cpf=?";
+
+		PreparedStatement statement = null;
+		ResultSet result = null;
+		try {
+
+			statement = c.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			statement.setString(1, cpf);
+			result = statement.executeQuery();
+
+			if (!result.next()) {
+				throw new PessoaNaoEncontradaException();
+			}
+
+			result.absolute(0);
+
+			Cliente cliente = null;
+
+			while (result.next()) {
+				cliente = new Cliente();
+				cliente.setId(result.getInt("id"));
+				cliente.setNome(result.getString("nome"));
+				cliente.setCpf(result.getString("cpf"));
+				cliente.setEmail(result.getString("email"));
+				cliente.setDataNascimento(new java.util.Date(result.getDate("data_nascimento").getTime()));
+
+			}
+
+			return cliente;
+
+		} catch (SQLException e) {
+			System.out.println("Não foi possível fazer a Consulta!");
+			e.printStackTrace();
+
+		} catch (PessoaNaoEncontradaException e2) {
+			System.out.println("Cliente não encontrado");
+
+		} finally {
+			try {
+
+				result.close();
+
+				statement.close();
+
+				c.close();
+
+			} catch (SQLException e) {
+				System.out.println("Não foi possível fechar a conexão!");
+
+			}
+		}
+		return null;
+	}
+
+	public void deletar(Cliente cliente) {
+
+		Connection c = ConnectionFactory.getConnection();
+		Pessoa p = this.getPessoa(cliente.getCpf());
+		String sql = "DELETE FROM cliente WHERE id=?";
+		String sql2 = "DELETE FROM pessoa WHERE id=?";
+
+		PreparedStatement statement = null;
+		PreparedStatement statement2 = null;
+		
+		try {
+			statement = c.prepareStatement(sql);
+			statement2 = c.prepareStatement(sql2);
+
+			statement.setInt(1, cliente.getId());
+			statement2.setInt(1, p.getId());
+
+			if (statement.executeUpdate() > 0 && statement2.executeUpdate() > 0) {
+				System.out.println("Usuario foi deletado com sucesso!");
+			} else {
+				throw new PessoaNaoEncontradaException();
+			}
+		} catch (SQLException e) {
+			System.out.println("Não foi possível deletar a Conta!");
+		} catch (PessoaNaoEncontradaException e2) {
+			e2.printStackTrace();
+
+		} finally {
+			try {
+				statement.close();
+				statement2.close();
+				c.close();
+			} catch (SQLException e) {
+				System.out.println("Não foi possível fechar a conexão!");
+			}
+		}
+
+	}
+
+	public void atualizar(Cliente cliente) {
+		Connection c = ConnectionFactory.getConnection();
+		
+		String sql = "UPDATE pessoa SET nome=?, cpf=?,email=? WHERE id=?";
+		
+
+		PreparedStatement statement = null;
+		try {
+			statement = c.prepareStatement(sql);
+
+			statement.setString(1, cliente.getNome());
+			statement.setString(2, cliente.getCpf());
+			statement.setString(3, cliente.getEmail());
+			statement.setInt(4, this.getIdPessoa(cliente.getId()));
+
+			if (statement.executeUpdate() > 0) {
+				System.out.println("Conta Atualizada com sucesso!");
+			} else {
+				throw new PessoaNaoEncontradaException();
+			}
+			statement.close();
+			c.close();
+		} catch (SQLException e) {
+			System.out.println("Não foi possível atualizar a Conta!");
+
+		} catch (PessoaNaoEncontradaException e2) {
+			e2.printStackTrace();
+		} finally {
+
+			try {
+				statement.close();
+				c.close();
+			} catch (SQLException e) {
+				System.out.println("Não foi possível fechar a conexão!");
+			}
+		}
+	}
+
+	public List<Cliente> lista() {
+		Connection c = ConnectionFactory.getConnection();
+		String sql = "select pessoa.id as id,pessoa.nome as nome,pessoa.cpf as cpf,pessoa.email as email,pessoa.data_nascimento as data_nascimento,cliente.taxa_fidelidade as taxa_fidelidade  from cliente INNER JOIN pessoa ON id_pessoa=pessoa.id;";
+
+		Statement statement = null;
+		ResultSet result = null;
+
+		try {
+			statement = c.createStatement(ResultSet.CONCUR_READ_ONLY, ResultSet.CONCUR_UPDATABLE);
+
+			result = statement.executeQuery(sql);
+
+			if (!result.next()) {
+
+				throw new NenhumaContaCadastradaException();
+			}
+
+			result.absolute(0);
+
+			Cliente cliente = null;
+			List<Cliente> list = new ArrayList<Cliente>();
+
+			while (result.next()) {
+				cliente = new Cliente();
+				cliente.setId(result.getInt("id"));
+				cliente.setNome(result.getString("nome"));
+				cliente.setCpf(result.getString("cpf"));
+				cliente.setEmail(result.getString("email"));
+				cliente.setDataNascimento(new java.util.Date(result.getDate("data_nascimento").getTime()));
+
+				list.add(cliente);
+			}
+			c.close();
+			return list;
+
+		} catch (SQLException e) {
+			System.out.println("Não foi possível fazer a Consulta!");
+
+		} catch (NenhumaContaCadastradaException e2) {
+			e2.printStackTrace();
+
+		} finally {
+			try {
+				result.close();
+				statement.close();
+				c.close();
+
+			} catch (SQLException e) {
+				System.out.println("Não foi possível fechar a conexão!");
+
+			}
+		}
+		return null;
+	}
+
+}

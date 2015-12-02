@@ -1,0 +1,149 @@
+package controller;
+
+import java.util.List;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import model.Cliente;
+import model.ContaCorrente;
+import persistence.contas.ContaCorrenteBusiness;
+import persistence.contas.ContaCorrenteRepository;
+import persistence.usuarios.ClienteBusiness;
+import persistence.usuarios.ClienteRepository;
+
+public class InicialController extends GenericController {
+	
+	@FXML
+	private ComboBox<String> comboTabela;
+	
+	//Tabela de Clientes
+
+	@FXML
+	private TableView<Cliente> mainTable;
+	
+	@FXML
+	private TableColumn<Cliente, Integer> idCol;
+
+	@FXML
+	private TableColumn<Cliente,String> cpfCol;
+	
+	@FXML
+	private TableColumn<Cliente,String> emailCol;
+	
+	@FXML
+	private TableColumn<Cliente,String> nascCol;
+	
+	@FXML
+	private TableColumn<Cliente, String> nomeCol;
+	
+	@FXML
+	private TableColumn<Cliente,Double> fidelidadeCol;
+	
+	//Tabela de Contas Correntes
+	@FXML
+	private TableView<ContaCorrente> secondaryTable;
+	
+	@FXML
+	private TableColumn<ContaCorrente,Integer> contacIdCol;
+	
+	@FXML
+	private TableColumn<ContaCorrente,String> contacNumeroCol;
+	
+	@FXML
+	private TableColumn<ContaCorrente,Double> contacSaldoCol;
+	
+	@FXML
+	private TableColumn<ContaCorrente,String> contacDataCol;
+	
+	
+
+	@FXML
+	private void initialize() {
+		
+		//Tabela de Clientes
+		idCol.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+		nomeCol.setCellValueFactory(cellData -> cellData.getValue().nomeProperty());
+		cpfCol.setCellValueFactory(cellData -> cellData.getValue().cpfProperty());
+		emailCol.setCellValueFactory(cellData -> cellData.getValue().emailProperty());	
+		nascCol.setCellValueFactory(cellData -> cellData.getValue().nascProperty());
+		fidelidadeCol.setCellValueFactory(cellData -> cellData.getValue().taxaFidelidadeProperty().asObject());
+		
+		//Table de Conta Correntes
+		contacIdCol.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+		contacNumeroCol.setCellValueFactory(cellData -> cellData.getValue().numeroProperty());
+		contacSaldoCol.setCellValueFactory(cellData -> cellData.getValue().saldoProperty().asObject());
+		contacDataCol.setCellValueFactory(cellData -> cellData.getValue().dataProperty());
+		
+		
+		
+		idCol.setStyle( "-fx-alignment: CENTER;");
+		nomeCol.setStyle( "-fx-alignment: CENTER;");
+		cpfCol.setStyle( "-fx-alignment: CENTER;");
+		emailCol.setStyle( "-fx-alignment: CENTER;");
+		nascCol.setStyle( "-fx-alignment: CENTER;");
+		fidelidadeCol.setStyle("-fx-alignment: CENTER;");
+		mainTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		secondaryTable.setStyle("visibility : hidden;");
+		mainTable.setStyle("visibility : hidden;");
+		comboTabela.getItems().addAll("Cliente","Conta Corrente");
+	
+	}
+
+	public void loadTableCliente(){
+		
+		ClienteRepository cRepository = new ClienteBusiness();
+
+		List<Cliente> listC = cRepository.lista();
+
+		ObservableList<Cliente> list = FXCollections.observableArrayList();
+
+		for (int x = 0; x < listC.size(); x++) {
+			list.add(listC.get(x));
+		}
+
+		mainTable.setItems(list);
+
+	}
+	
+	public void loadTableContaC(){
+		
+		ContaCorrenteRepository ccRepository = new ContaCorrenteBusiness();
+		
+		List<ContaCorrente> listCC = ccRepository.lista();
+		
+		ObservableList<ContaCorrente> list = FXCollections.observableArrayList();
+		
+		for(int x = 0; x < listCC.size();x++){
+			list.add(listCC.get(x));
+		}
+		
+		secondaryTable.setItems(list);
+	}
+	
+	
+	public void changeTable(){
+		if(comboTabela.getSelectionModel().getSelectedItem().equals("Cliente")){
+			secondaryTable.setStyle("visibility : hidden;");
+			mainTable.setStyle("visibility : visible;");
+			this.loadTableCliente();
+		}
+		else if(comboTabela.getSelectionModel().getSelectedItem().equals("Conta Corrente")){
+			secondaryTable.setStyle("visibility : visible;");
+			mainTable.setStyle("visibility : hidden;");
+			this.loadTableContaC();
+		}
+	}
+	
+	public void printCliente(){
+		
+		List<Cliente> c = mainTable.getSelectionModel().getSelectedItems();
+		
+		System.out.println(c);
+	}
+
+}

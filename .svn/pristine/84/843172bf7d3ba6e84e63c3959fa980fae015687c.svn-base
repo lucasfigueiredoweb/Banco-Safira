@@ -1,0 +1,15 @@
+package persistence.usuarios;
+
+import java.util.List;
+
+import model.Cliente;
+
+public interface ClienteRepository extends PessoaRepository {
+	
+	public void salvar(Cliente c);
+	public void deletar(int id);
+	public void atualizar(Cliente c);
+	public List<Cliente> lista();
+	public Cliente getCliente(String cpf);
+
+}

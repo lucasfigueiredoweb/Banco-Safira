@@ -1,0 +1,47 @@
+package model.testes;
+
+import junit.framework.TestCase;
+import model.ContaPoupanca;
+
+public class ContaPoupancaTest extends TestCase {
+
+	private ContaPoupanca contap;
+
+	public void setUp() {
+		contap = new ContaPoupanca();
+	}
+
+	public void tearDown() {
+		contap = null;
+	}
+
+	public void testCreditar() {
+		contap.creditar(10.0, false);
+		assertEquals(10.0, contap.getSaldo());
+	}
+
+	public void testAtualiza() {
+		contap.creditar(100.0, false);
+		contap.atualiza(0.5);
+		assertEquals(2.5 * 100, contap.getSaldo());
+	}
+
+	public void testDebitar() {
+		contap.creditar(200.0, false);
+		contap.debitar(75.0, false);
+		assertEquals(125.0, contap.getSaldo());
+
+	}
+
+	public void testTransferir() {
+		ContaPoupanca contap2 = new ContaPoupanca();
+		contap.creditar(250.0, false);
+		contap.transferir(contap2, 125.0);
+		assertEquals(125.0, contap2.getSaldo());
+		assertEquals(125.0, contap.getSaldo());
+
+	}
+
+	
+
+}

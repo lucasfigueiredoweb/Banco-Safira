@@ -1,0 +1,88 @@
+package application;
+
+import java.util.Calendar;
+
+import model.Funcionario;
+import persistence.usuarios.FuncionarioBusiness;
+import persistence.usuarios.FuncionarioRepository;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+//		ClienteRepository crepository = new ClienteBusiness();
+		FuncionarioRepository frepository = new FuncionarioBusiness();
+//		
+//		System.out.println(crepository.isDisponivel("10858006448"));
+//		
+//		Cliente cliente = new Cliente();
+//		cliente.setCpf("10858006449");
+//		cliente.setDataNascimento(Calendar.getInstance().getTime());
+//		cliente.setEmail("fernando@.com");
+//		cliente.setNome("Fernando");
+//		cliente.setTaxaFidelidade(1.0);
+//		crepository.salvar(cliente);
+		
+
+//		cliente = crepository.getCliente("10858006448");
+//		
+//		
+//		cliente.setEmail("fernandopetros@gmail.com");
+//		crepository.atualizar(cliente);
+//		
+
+//		cliente = crepository.getCliente("10858006448");
+//
+		Funcionario func = new Funcionario();
+//
+//		cliente.setEmail("fernandopetros@gmail.com");
+//		crepository.atualizar(cliente);
+		
+
+		
+		func = frepository.getFuncionario("98765432100");
+		func.setCpf("10677218435");
+		func.setDataNascimento(Calendar.getInstance().getTime());
+		func.setEmail("LUKINHAS");
+		func.setSenha("123456");
+		func.setNome("LucasFaminino");
+		func.setSalario(950.2);
+//		frepository.deletar(func);
+		frepository.atualizar(func);
+		
+		
+
+		
+//		frepository.salvar(func);
+		
+		
+		
+//		cliente = crepository.getCliente("10858006448");
+//		
+//		
+//		cliente.setEmail("fernandopetros@gmail.com");
+//		crepository.atualizar(cliente);
+		
+		
+//		crepository.salvar(cliente);
+//		System.out.println(crepository.lista());
+//		crepository.salvar(cliente);
+//		System.out.println(crepository.list());
+//		ContaPoupanca c = crepository.getConta("1234");
+//		c.creditar(1500.0, false);
+//		crepository.atualizar(c);
+//		System.out.println(crepository.getCliente("10858006448"));
+		
+//		System.out.println(c);
+//		c.setNumero("1234");
+//		c.setSaldo(250.50);
+//		c.setData(Calendar.getInstance().getTime());
+//		crepository.atualizar(c);
+//		
+//		crepository.deletarConta(25);
+		
+	}
+	
+	
+	
+}

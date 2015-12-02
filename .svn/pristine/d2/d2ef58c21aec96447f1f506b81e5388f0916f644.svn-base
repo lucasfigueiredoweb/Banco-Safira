@@ -1,0 +1,148 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import exception.CpfJaCadastradoException;
+import exception.NenhumaContaCadastradaException;
+import model.Cliente;
+import persistence.ConnectionFactory;
+
+public class ClienteBusiness implements ClienteRepository{
+	
+	public void salvar(Cliente cliente) {
+		Connection c = ConnectionFactory.getConnection();
+
+		try {
+
+			if (this.isDisponivel(cliente.getCpf())) {
+				String sql = "INSERT INTO cliente (nome,cpf,data_nascimento,email) VALUES (?, ?, ?, ?)";
+
+				PreparedStatement statement = c.prepareStatement(sql);
+				statement.setString(1, cliente.getNome());
+				statement.setString(2, cliente.getCpf());
+				statement.setDate(3, new Date(cliente.getDataNascimento().getTime()));
+				statement.setString(4, cliente.getEmail());
+
+				statement.execute();
+				System.out.println("Cliente salvo com sucesso!");
+				statement.close();
+			} else {
+				throw new CpfJaCadastradoException();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (CpfJaCadastradoException e2) {
+			System.out.println("Cpf ja cadastrado");
+		} finally {
+
+			try {
+				c.close();
+			} catch (SQLException e) {
+				System.out.println("Não foi possível fechar a conexão!");
+			}
+		}
+
+	}
+	
+	public List<Cliente> lista(){
+		Connection c = ConnectionFactory.getConnection();
+		String sql = "SELECT * FROM cliente";
+
+		Statement statement;
+
+		try {
+			statement = c.createStatement(ResultSet.CONCUR_READ_ONLY, ResultSet.CONCUR_UPDATABLE);
+
+			ResultSet result = statement.executeQuery(sql);
+
+			if (!result.next()) {
+
+				throw new NenhumaContaCadastradaException();
+			}
+
+			result.absolute(0);
+
+			Cliente cliente = null;
+			List<Cliente> list = new ArrayList<Cliente>();
+
+			while (result.next()) {
+				cliente = new Cliente();
+				cliente.setId(result.getInt("id"));
+				cliente.setNome(result.getString("nome"));
+				cliente.setCpf(result.getString("cpf"));
+				cliente.setEmail(result.getString("email"));
+				cliente.setDataNascimento(new java.util.Date(result.getDate("data_nascimento").getTime()));
+
+				list.add(cliente);
+			}
+			c.close();
+			return list;
+
+		} catch (SQLException e) {
+			System.out.println("Não foi possível fazer a Consulta!");
+
+		} catch (NenhumaContaCadastradaException e2) {
+			e2.printStackTrace();
+
+		} finally {
+			try {
+				c.close();
+
+			} catch (SQLException e) {
+				System.out.println("Não foi possível fechar a conexão!");
+
+			}
+		}
+		return null;
+	}
+	
+	private boolean isDisponivel(String cpf) {
+		Connection c = ConnectionFactory.getConnection();
+		String sql = "SELECT * FROM cliente where cpf=?";
+		String sql2 = "SELECT * FROM funcionario where cpf=?";
+		PreparedStatement statement;
+
+		try {
+			statement = c.prepareStatement(sql);
+
+			statement.setString(1, cpf + "");
+
+			ResultSet result1 = statement.executeQuery();
+
+			statement = c.prepareStatement(sql2);
+
+			statement.setString(1, cpf + "");
+
+			ResultSet result2 = statement.executeQuery();
+
+			if (!result1.next() && !result2.next()) {
+
+				return true;
+
+			} else {
+				c.close();
+				return false;
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Não foi possível fazer a Consulta!");
+			e.printStackTrace();
+		} finally {
+			try {
+				c.close();
+
+			} catch (SQLException e) {
+				System.out.println("Não foi possível fechar a conexão!");
+
+			}
+		}
+		return true;
+	}
+}

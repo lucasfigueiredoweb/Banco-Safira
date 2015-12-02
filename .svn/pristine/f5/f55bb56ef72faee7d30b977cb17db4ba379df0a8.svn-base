@@ -1,0 +1,39 @@
+package application;
+
+
+import persistence.usuarios.FuncionarioBusiness;
+import persistence.usuarios.FuncionarioRepository;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+		FuncionarioRepository crepository = new FuncionarioBusiness();
+//		
+//		Cliente cliente = crepository.getCliente("10858006448");
+//		cliente.setCpf("10858006447");
+//		cliente.setDataNascimento(Calendar.getInstance().getTime());
+//		cliente.setEmail("fernando@.com");
+//		cliente.setNome("Fernando");
+//		cliente.setTaxaFidelidade(1.0);
+//		System.out.println(crepository.lista());
+//		crepository.salvar(cliente);
+//		System.out.println(crepository.list());
+//		ContaPoupanca c = crepository.getConta("1234");
+//		c.creditar(1500.0, false);
+//		crepository.atualizar(c);
+//		System.out.println(crepository.getCliente("10858006448"));
+		
+//		System.out.println(c);
+//		c.setNumero("1234");
+//		c.setSaldo(250.50);
+//		c.setData(Calendar.getInstance().getTime());
+//		crepository.atualizar(c);
+//		
+//		crepository.deletarConta(25);
+		
+	}
+	
+	
+	
+}

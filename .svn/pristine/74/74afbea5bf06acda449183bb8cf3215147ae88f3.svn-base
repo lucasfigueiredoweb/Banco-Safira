@@ -1,0 +1,46 @@
+package model.testes;
+
+import junit.framework.TestCase;
+import model.ContaCorrente;
+
+public class ContaCorrenteTeste extends TestCase {
+	
+	private ContaCorrente contac;
+	
+	public void setUp() {
+		contac = new ContaCorrente();
+		
+	}
+
+	public void tearDown() {
+		contac = null;
+		
+	}
+	
+	public void testCreditar() {
+		contac.creditar(10.0, false);
+		assertEquals(10.0, contac.getSaldo());
+	
+	}
+
+	public void testAtualiza() {
+		contac.creditar(100.0, false);
+		contac.atualiza(0.5);
+		assertEquals(2 * 100.0, contac.getSaldo());
+	}
+
+	public void testDebitar() {
+		contac.creditar(100.0, false);
+		contac.debitar(50.0, false);
+		assertEquals(50.0, contac.getSaldo());
+	}
+
+	public void testTransferir() {
+		ContaCorrente contac2 = new ContaCorrente();
+		contac.creditar(100.0, false);
+		contac.transferir(contac2, 50.0);
+		assertEquals(50.0, contac2.getSaldo());
+		assertEquals(50.0, contac.getSaldo());
+	}
+
+}

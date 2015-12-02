@@ -1,0 +1,58 @@
+package controller;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
+import model.Cliente;
+import model.ContaCorrente;
+import model.ContaPoupanca;
+import persistence.contas.ContaCorrenteBusiness;
+import persistence.contas.ContaCorrenteRepository;
+import persistence.contas.ContaPoupancaBusiness;
+import persistence.contas.ContaPoupancaRepository;
+import persistence.usuarios.ClienteBusiness;
+import persistence.usuarios.ClienteRepository;
+
+public class ContaController extends GenericController {
+
+	@FXML
+	private ComboBox<Cliente> comboCliente;
+
+	@FXML
+	private ComboBox<String> comboConta;
+
+	@FXML
+	private TextField contaSaldo;
+
+	private ClienteRepository crepository = new ClienteBusiness();
+
+	@FXML
+	private void initialize() {
+			comboCliente.getItems().addAll(crepository.lista());
+	}
+
+	public void criarConta() {
+
+		if (comboConta.getSelectionModel().getSelectedItem().equals("ContaCorrente")) {
+
+			ContaCorrente conta = new ContaCorrente();
+			ContaCorrenteRepository contacrepository = new ContaCorrenteBusiness();
+			conta.setSaldo(Double.parseDouble(contaSaldo.getText()));
+
+			contacrepository.salvar(conta,comboCliente.getSelectionModel().getSelectedItem());
+
+		}
+
+		else if (comboConta.getSelectionModel().getSelectedItem().equals("ContaPoupança")) {
+
+			ContaPoupanca conta = new ContaPoupanca();
+			ContaPoupancaRepository contaprepository = new ContaPoupancaBusiness();
+			conta.setSaldo(Double.parseDouble(contaSaldo.getText()));
+
+			contaprepository.salvar(conta,comboCliente.getSelectionModel().getSelectedItem());
+
+		}
+
+	}
+
+}

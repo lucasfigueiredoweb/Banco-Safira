@@ -1,0 +1,20 @@
+package persistence.contas;
+
+import java.util.List;
+
+import model.Conta;
+import model.ContaCorrente;
+
+public interface ContaCorrenteRepository {
+
+	public void salvar(Conta conta);
+
+	public void atualizar(Conta conta);
+
+	public void deletar(int id);
+
+	public List<ContaCorrente> lista();
+
+	public ContaCorrente getConta(String numero);
+
+}

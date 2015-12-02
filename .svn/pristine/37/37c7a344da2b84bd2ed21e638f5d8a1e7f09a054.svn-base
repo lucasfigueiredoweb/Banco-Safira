@@ -1,0 +1,14 @@
+package dao;
+
+import java.util.List;
+
+import model.Cliente;
+
+public interface ClienteRepository {
+	
+	public void salvar(Cliente c);
+//	public void deletar(int id);
+//	public void atualizar(Cliente c);
+	public List<Cliente> lista();
+
+}

@@ -1,0 +1,69 @@
+package util.testes;
+
+import junit.framework.TestCase;
+import model.ContaCorrente;
+import model.ContaPoupanca;
+
+public class ContaTest extends TestCase {
+
+	private ContaCorrente contac;
+	private ContaPoupanca contap;
+
+	public void setUp() {
+		contac = new ContaCorrente();
+		contap = new ContaPoupanca();
+	}
+
+	public void tearDown() {
+		contac = null;
+		contap = null;
+	}
+
+	public void testCreditar() {
+		contac.creditar(10.0, true);
+		assertEquals(10.0, contac.getSaldo());
+		
+		contap.creditar(10.0, true);
+		assertEquals(10.0, contap.getSaldo());
+	}
+
+	public void testAtualiza() {
+		contac.creditar(100.0, true);
+		contac.atualiza(0.5);
+		assertEquals(2 * 100.0, contac.getSaldo());
+		
+		contap.creditar(100.0, true);
+		contap.atualiza(0.5);
+		assertEquals(2.5 * 100, contap.getSaldo());
+	}
+
+	public void testDebitar() {
+		contac.creditar(100.0, true);
+		contac.debitar(50.0, true);
+		assertEquals(50.0, contac.getSaldo());
+		
+		contap.creditar(200.0, true);
+		contap.debitar(75.0, true);
+		assertEquals(125.0, contap.getSaldo());
+
+	}
+
+	public void testTransferir() {
+		contac.creditar(100.0, true);
+		contac.transferir(contap, 50.0);
+		assertEquals(50.0, contap.getSaldo());
+		assertEquals(50.0, contac.getSaldo());
+		
+		contap.creditar(250.0, true);
+		contap.transferir(contac, 125.0);
+		assertEquals(125.0 + 50.0, contac.getSaldo());
+		assertEquals(125.0 + 50.0, contap.getSaldo());
+
+	}
+
+	public void testExtrato() {
+		contac.extrato();
+		contap.extrato();
+	}
+
+}

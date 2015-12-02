@@ -1,0 +1,15 @@
+package model;
+
+public class ContaCorrente extends Conta {
+
+	@Override
+	public void atualiza(Double taxa) {
+		saldo += saldo * (taxa * 2);
+	}
+	
+	public String toString(){
+		String texto = "Numero: "+this.getNumero()+" Saldo : "+this.getSaldo();
+		return texto;
+	}
+
+}

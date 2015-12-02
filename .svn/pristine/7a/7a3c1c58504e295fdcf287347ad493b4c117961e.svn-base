@@ -1,0 +1,66 @@
+package persistence.usuarios;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import util.ConnectionFactory;
+
+public class PessoaBusiness implements PessoaRepository {
+	
+	public boolean isDisponivel(String cpf) {
+		Connection c = ConnectionFactory.getConnection();
+		String sql = "SELECT * FROM cliente where cpf=?";
+		String sql2 = "SELECT * FROM funcionario where cpf=?";
+		PreparedStatement statement = null;
+		PreparedStatement statement2 = null;
+		ResultSet result1 = null;
+		ResultSet result2 = null;
+
+		try {
+			statement = c.prepareStatement(sql);
+
+			statement.setString(1, cpf + "");
+
+			result1 = statement.executeQuery();
+
+			statement2 = c.prepareStatement(sql2);
+
+			statement2.setString(1, cpf + "");
+
+			result2 = statement2.executeQuery();
+
+			if (!result1.next() && !result2.next()) {
+
+				return true;
+
+			} else {
+
+				return false;
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Não foi possível fazer a Consulta!");
+			e.printStackTrace();
+		} finally {
+			try {
+
+				result1.close();
+
+				result2.close();
+
+				statement.close();
+
+				statement2.close();
+
+				c.close();
+
+			} catch (SQLException e) {
+				System.out.println("Não foi possível fechar a conexão!");
+
+			}
+		}
+		return true;
+	}
+}

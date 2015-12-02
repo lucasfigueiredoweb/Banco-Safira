@@ -1,0 +1,280 @@
+package persistence.contas;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import exception.ContaJaCadastradaException;
+import exception.ContaNaoEncontradaException;
+import exception.NenhumaContaCadastradaException;
+import model.Conta;
+import model.ContaPoupanca;
+import util.ConnectionFactory;
+
+public class ContaPoupancaBusiness implements ContaPoupancaRepository {
+
+	public void salvar(Conta conta) {
+		Connection c = ConnectionFactory.getConnection();
+		String sql = "INSERT INTO conta_poupanca (numero,saldo,data_cadastro) VALUES (?, ?, ?)";
+		PreparedStatement statement = null;
+
+		try {
+
+			if (this.isDisponivel(conta.getNumero())) {
+
+				statement = c.prepareStatement(sql);
+				statement.setString(1, conta.getNumero());
+				statement.setDouble(2, conta.getSaldo());
+				statement.setDate(3, new Date(conta.getData().getTime()));
+
+				statement.execute();
+				System.out.println("Uma nova Conta foi criada com sucesso!");
+
+			} else {
+				throw new ContaJaCadastradaException();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ContaJaCadastradaException e2) {
+			e2.printStackTrace();
+		} finally {
+
+			try {
+				statement.close();
+				c.close();
+			} catch (SQLException e) {
+				System.out.println("Não foi possível fechar a conexão!");
+			}
+
+		}
+
+	}
+
+	public void atualizar(Conta conta) {
+		Connection c = ConnectionFactory.getConnection();
+
+		String sql = "UPDATE conta_poupanca SET numero=?, saldo=? WHERE id=?";
+
+		PreparedStatement statement = null;
+		try {
+			statement = c.prepareStatement(sql);
+
+			statement.setString(1, conta.getNumero());
+			statement.setDouble(2, conta.getSaldo());
+			statement.setInt(3, conta.getId());
+
+			if (statement.executeUpdate() > 0) {
+				System.out.println("Conta Atualizada com sucesso!");
+			} else {
+				throw new ContaNaoEncontradaException();
+			}
+		} catch (SQLException e) {
+			System.out.println("Não foi possível atualizar a Conta!");
+
+		} catch (ContaNaoEncontradaException e2) {
+			e2.printStackTrace();
+		} finally {
+
+			try {
+				statement.close();
+				c.close();
+			} catch (SQLException e) {
+				System.out.println("Não foi possível fechar a conexão!");
+			}
+		}
+	}
+
+	public ContaPoupanca getConta(String numero) {
+		Connection c = ConnectionFactory.getConnection();
+		String sql = "SELECT * FROM conta_poupanca where numero=?";
+
+		PreparedStatement statement = null;
+		ResultSet result = null;
+
+		try {
+
+			statement = c.prepareStatement(sql,
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+			statement.setString(1, numero);
+			result = statement.executeQuery();
+
+			if (!result.next()) {
+
+				throw new ContaNaoEncontradaException();
+			}
+
+			result.absolute(0);
+
+			ContaPoupanca cp = null;
+
+			while (result.next()) {
+				cp = new ContaPoupanca();
+				cp.setId(result.getInt("id"));
+				cp.setNumero(result.getString("numero"));
+				cp.setSaldo(result.getDouble("saldo"));
+				cp.setData(new java.util.Date(result.getDate("data_cadastro")
+						.getTime()));
+
+			}
+			return cp;
+
+		} catch (SQLException e) {
+			System.out.println("Não foi possível fazer a Consulta!");
+			e.printStackTrace();
+
+		} catch (ContaNaoEncontradaException e2) {
+			e2.printStackTrace();
+
+		} finally {
+			try {
+				result.close();
+				statement.close();
+				c.close();
+			} catch (SQLException e) {
+				System.out.println("Não foi possível fechar a conexão!");
+
+			}
+		}
+		return null;
+	}
+
+	public void deletar(int id) {
+
+		Connection c = ConnectionFactory.getConnection();
+		String sql = "DELETE FROM conta_poupanca WHERE id=?";
+
+		PreparedStatement statement = null;
+		try {
+			statement = c.prepareStatement(sql);
+
+			statement.setInt(1, id);
+
+			if (statement.executeUpdate() > 0) {
+				System.out.println("Conta foi deletada com sucesso!");
+			} else {
+				throw new ContaNaoEncontradaException();
+			}
+		} catch (SQLException e) {
+			System.out.println("Não foi possível deletar a Conta!");
+		} catch (ContaNaoEncontradaException e2) {
+			e2.printStackTrace();
+
+		} finally {
+			try {
+				statement.close();
+				c.close();
+			} catch (SQLException e) {
+				System.out.println("Não foi possível fechar a conexão!");
+			}
+		}
+
+	}
+
+	@SuppressWarnings("resource")
+	private boolean isDisponivel(String numero) {
+		Connection c = ConnectionFactory.getConnection();
+		String sql = "SELECT * FROM conta_poupanca where numero=?";
+		String sql2 = "SELECT * FROM conta_corrente where numero=?";
+		PreparedStatement statement = null;
+		ResultSet result1 = null;
+		ResultSet result2 = null;
+
+		try {
+			statement = c.prepareStatement(sql);
+
+			statement.setString(1, numero + "");
+
+			result1 = statement.executeQuery();
+
+			statement = c.prepareStatement(sql2);
+
+			statement.setString(1, numero + "");
+
+			result2 = statement.executeQuery();
+
+			if (!result1.next() && !result2.next()) {
+
+				return true;
+
+			} else {
+				return false;
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Não foi possível fazer a Consulta!");
+			e.printStackTrace();
+		} finally {
+			try {
+				result1.close();
+				result2.close();
+				statement.close();
+				c.close();
+			} catch (SQLException e) {
+				System.out.println("Não foi possível fechar a conexão!");
+
+			}
+		}
+		return true;
+	}
+
+	public List<ContaPoupanca> lista() {
+
+		Connection c = ConnectionFactory.getConnection();
+		String sql = "SELECT * FROM conta_poupanca";
+
+		Statement statement = null;
+		ResultSet result = null;
+
+		try {
+			statement = c.createStatement(ResultSet.CONCUR_READ_ONLY,
+					ResultSet.CONCUR_UPDATABLE);
+
+			result = statement.executeQuery(sql);
+
+			if (!result.next()) {
+
+				throw new NenhumaContaCadastradaException();
+			}
+
+			result.absolute(0);
+
+			ContaPoupanca cp = null;
+			List<ContaPoupanca> list = new ArrayList<ContaPoupanca>();
+
+			while (result.next()) {
+				cp = new ContaPoupanca();
+				cp.setId(result.getInt("id"));
+				cp.setNumero(result.getString("numero"));
+				cp.setSaldo(result.getDouble("saldo"));
+				cp.setData(new java.util.Date(result.getDate("data_cadastro")
+						.getTime()));
+
+				list.add(cp);
+			}
+			return list;
+
+		} catch (SQLException e) {
+			System.out.println("Não foi possível fazer a Consulta!");
+
+		} catch (NenhumaContaCadastradaException e2) {
+			e2.printStackTrace();
+
+		} finally {
+			try {
+				result.close();
+				statement.close();
+				c.close();
+			} catch (SQLException e) {
+				System.out.println("Não foi possível fechar a conexão!");
+
+			}
+		}
+		return null;
+	}
+}

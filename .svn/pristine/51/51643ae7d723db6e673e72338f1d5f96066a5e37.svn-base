@@ -1,0 +1,73 @@
+package controller;
+
+import java.util.List;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import model.Cliente;
+import persistence.usuarios.ClienteBusiness;
+import persistence.usuarios.ClienteRepository;
+
+public class InicialController extends GenericController {
+
+	@FXML
+	private TableView<Cliente> mainTable;
+
+	@FXML
+	private TableColumn<Cliente, Integer> idCol;
+
+	@FXML
+	private TableColumn<Cliente,String> cpfCol;
+	
+	@FXML
+	private TableColumn<Cliente,String> emailCol;
+	
+	@FXML
+	private TableColumn<Cliente,String> nascCol;
+	
+	@FXML
+	private TableColumn<Cliente, String> nomeCol;
+	
+	private ClienteRepository crepository = new ClienteBusiness();
+
+	@FXML
+	private void initialize() {
+		
+		idCol.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+		nomeCol.setCellValueFactory(cellData -> cellData.getValue().nomeProperty());
+		cpfCol.setCellValueFactory(cellData -> cellData.getValue().cpfProperty());
+		emailCol.setCellValueFactory(cellData -> cellData.getValue().emailProperty());	
+		nascCol.setCellValueFactory(cellData -> cellData.getValue().nascProperty());
+		idCol.setStyle( "-fx-alignment: CENTER;");
+		nomeCol.setStyle( "-fx-alignment: CENTER;");
+		cpfCol.setStyle( "-fx-alignment: CENTER;");
+		emailCol.setStyle( "-fx-alignment: CENTER;");
+		nascCol.setStyle( "-fx-alignment: CENTER;");
+	
+	}
+
+	public void loadTable() throws Exception {
+
+		List<Cliente> listC = crepository.lista();
+
+		ObservableList<Cliente> list = FXCollections.observableArrayList();
+
+		for (int x = 0; x < listC.size(); x++) {
+			list.add(listC.get(x));
+		}
+
+		mainTable.setItems(list);
+
+	}
+	
+	public void printCliente(){
+		
+		List<Cliente> c = mainTable.getSelectionModel().getSelectedItems();
+		
+		System.out.println(c);
+	}
+
+}

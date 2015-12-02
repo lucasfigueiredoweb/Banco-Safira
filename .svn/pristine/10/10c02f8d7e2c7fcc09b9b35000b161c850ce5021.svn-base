@@ -1,0 +1,63 @@
+package controller;
+
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import model.Cliente;
+import persistence.usuarios.ClienteBusiness;
+import persistence.usuarios.ClienteRepository;
+
+public class ClienteController extends GenericController {
+	
+	@FXML
+	private TextField clienteNome;
+	
+	@FXML
+	private TextField clienteEmail;
+	
+	@FXML
+	private TextField clienteCpf;
+	
+	@FXML
+	private DatePicker clienteDataNascimento;
+	
+	public void criarCliente(){
+		
+		Cliente c = new Cliente();
+		ClienteRepository crepository = new ClienteBusiness();
+	
+		
+		c.setNome(clienteNome.getText());
+		c.setEmail(clienteEmail.getText());
+		c.setCpf(clienteCpf.getText());
+		try {
+			c.setDataNascimento(new SimpleDateFormat("dd/MM/yyyy").parse(clienteDataNascimento.getEditor().getText()));
+		} catch (ParseException e) {
+			System.out.println("Erro de conversão de data!");
+		}
+		c.setTaxaFidelidade(0.0);
+		System.out.println(c.getNome());
+		System.out.println(c.getCpf());
+		System.out.println(c.getEmail());
+		System.out.println(c.getDataNascimento());
+		System.out.println();
+		
+		crepository.salvar(c);
+		
+	}
+	
+	public void editarCliente(){
+
+//		Cliente c = new Cliente();
+//		ClienteRepository crepository = new ClienteBusiness();
+//
+//		c = crepository.getCliente(cpf);
+		
+		
+	}
+
+}

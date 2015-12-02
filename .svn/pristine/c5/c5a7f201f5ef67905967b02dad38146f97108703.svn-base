@@ -1,0 +1,25 @@
+package model;
+
+import java.text.SimpleDateFormat;
+
+public class Cliente extends Pessoa {
+	
+	private Double taxaFidelidade;
+
+	public Double getTaxaFidelidade() {
+		return taxaFidelidade;
+	}
+
+	public void setTaxaFidelidade(Double taxaFidelidade) {
+		this.taxaFidelidade = taxaFidelidade;
+	}
+	
+	public String toString(){
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		String text = "Id: "+this.getId()+" Nome: "+this.getNome() + " CPF:"+this.getCpf()
+				+" Email: "+this.getEmail()+ " Data de Nascimento:  "+sdf.format(this.getDataNascimento());
+		return text;
+	}
+	
+	
+}

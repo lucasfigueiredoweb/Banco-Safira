@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InicialController">
+   <children>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="600.0" fitWidth="803.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/bg.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </StackPane>
+            <StackPane prefHeight="600.0" prefWidth="801.0">
+               <children>
+                  <AnchorPane prefHeight="637.0" prefWidth="768.0">
+                     <children>
+                        <ImageView fitHeight="401.0" fitWidth="739.0" layoutX="29.0" layoutY="173.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../images/panel-large2.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </StackPane>
+            <StackPane prefHeight="600.0" prefWidth="800.0">
+               <children>
+                  <AnchorPane prefHeight="599.0" prefWidth="812.0">
+                     <children>
+                        <ImageView fitHeight="105.0" fitWidth="384.0" layoutX="239.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../images/safira-logo.jpg" />
+                           </image>
+                        </ImageView>
+                        <TableView fx:id="secondaryTable" layoutX="52.0" layoutY="199.0" prefHeight="281.0" prefWidth="690.0">
+                          <columns>
+                            <TableColumn fx:id="contacIdCol" prefWidth="124.0" text="ID" />
+                            <TableColumn fx:id="contacNumeroCol" prefWidth="154.0" text="Numero" />
+                              <TableColumn fx:id="contacSaldoCol" minWidth="0.0" prefWidth="190.0" text="Saldo" />
+                              <TableColumn fx:id="contacDataCol" minWidth="0.0" prefWidth="221.0" text="Data de Cadastro" />
+                          </columns>
+                        </TableView>
+                        <TableView fx:id="thirdTable" layoutX="51.0" layoutY="200.0" prefHeight="281.0" prefWidth="690.0">
+                           <columns>
+                              <TableColumn fx:id="contapIdCol" prefWidth="124.0" text="ID" />
+                              <TableColumn fx:id="contapNumeroCol" prefWidth="154.0" text="Numero" />
+                              <TableColumn fx:id="contapSaldoCol" minWidth="0.0" prefWidth="190.0" text="Saldo" />
+                              <TableColumn fx:id="contapDataCol" minWidth="0.0" prefWidth="221.0" text="Data de Cadastro" />
+                           </columns>
+                        </TableView>
+                        <TableView fx:id="mainTable" layoutX="52.0" layoutY="200.0" prefHeight="281.0" prefWidth="690.0">
+                          <columns>
+                            <TableColumn fx:id="idCol" prefWidth="45.0" text="ID" />
+                            <TableColumn fx:id="nomeCol" prefWidth="117.0" text="Nome" />
+                              <TableColumn fx:id="cpfCol" prefWidth="117.0" text="CPF" />
+                              <TableColumn fx:id="emailCol" prefWidth="190.0" text="Email" />
+                              <TableColumn fx:id="nascCol" prefWidth="104.0" text="Data Nascimento" />
+                              <TableColumn fx:id="fidelidadeCol" prefWidth="116.0" text="Taxa Fidelidade" />
+                          </columns>
+                        </TableView>
+                        <ComboBox fx:id="comboTabela" layoutX="28.0" layoutY="133.0" onAction="#changeTable" prefHeight="25.0" prefWidth="245.0" promptText="Escolher" />
+                        <Button layoutX="297.0" layoutY="128.0" mnemonicParsing="false" onAction="#callAddScreen" styleClass="btn" stylesheets="@application.css" text="+" textFill="WHITE" />
+                        <Text layoutX="29.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Listar por" wrappingWidth="58.3583984375">
+                           <font>
+                              <Font name="Arial" size="14.0" />
+                           </font>
+                        </Text>
+                        <ComboBox fx:id="comboAcoesCliente" layoutX="473.0" layoutY="133.0" prefHeight="25.0" prefWidth="245.0" promptText="Escolher" />
+                        <ComboBox fx:id="comboAcoesConta" layoutX="473.0" layoutY="133.0" prefHeight="25.0" prefWidth="245.0" promptText="Escolher" />
+                        <Button fx:id="plusCliente" layoutX="731.0" layoutY="128.0" mnemonicParsing="false" onAction="#actionCliente" styleClass="btn" stylesheets="@application.css" text="+" textFill="WHITE" />
+                        <Text layoutX="473.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ações" wrappingWidth="58.3583984375">
+                           <font>
+                              <Font name="Arial" size="14.0" />
+                           </font>
+                        </Text>
+                        <Button fx:id="plusConta" layoutX="733.0" layoutY="128.0" mnemonicParsing="false" onAction="#action" styleClass="btn" stylesheets="@application.css" text="+" textFill="WHITE" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </StackPane>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

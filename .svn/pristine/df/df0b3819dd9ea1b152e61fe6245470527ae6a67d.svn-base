@@ -1,0 +1,10 @@
+package controller;
+
+import model.Funcionario;
+import util.AlertBox;
+
+public class GenericController {
+	
+	protected static AlertBox ab = new AlertBox();
+	protected static Funcionario funcSessao; 
+}

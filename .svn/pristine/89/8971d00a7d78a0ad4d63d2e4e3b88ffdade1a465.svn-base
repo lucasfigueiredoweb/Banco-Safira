@@ -1,0 +1,71 @@
+package model;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
+public  class Pessoa extends EntidadeAbstrata {
+	
+	private final StringProperty nome;
+	private final StringProperty cpf;
+	private final  StringProperty email;
+	private final  ObjectProperty<Date> dataNascimento;
+	
+	public Pessoa(){
+		this(null,null,null,null);
+	}
+	
+	public Pessoa(String nome,String cpf,String email,Date dataNascimento){
+		this.nome = new SimpleStringProperty(nome);
+		this.cpf = new SimpleStringProperty(cpf);
+		this.email = new SimpleStringProperty(email);
+		this.dataNascimento = new SimpleObjectProperty<Date>(dataNascimento);
+	}
+	
+	public StringProperty nomeProperty(){
+		return nome;
+	}
+	
+	public StringProperty cpfProperty(){
+		return cpf;
+	}
+	
+	public StringProperty emailProperty(){
+		return email;
+	}
+	
+	public StringProperty nascProperty(){
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		return new SimpleStringProperty(sdf.format(dataNascimento.get()));
+	}
+	
+	public String getNome() {
+		return nome.get();
+	}
+	public void setNome(String nome) {
+		this.nome.set(nome);
+	}
+	public String getCpf() {
+		return cpf.get();
+	}
+	public void setCpf(String cpf) {
+		this.cpf.set(cpf);
+	}
+	public String getEmail() {
+		return email.get();
+	}
+	public void setEmail(String email) {
+		this.email.set(email);
+	}
+	public Date getDataNascimento() {
+		return dataNascimento.get();
+	}
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento.set(dataNascimento);
+	}
+	
+}

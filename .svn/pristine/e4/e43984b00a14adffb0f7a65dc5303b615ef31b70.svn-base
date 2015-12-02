@@ -1,0 +1,16 @@
+package persistence.usuarios;
+
+import java.util.List;
+
+import model.Funcionario;
+
+public interface FuncionarioRepository extends PessoaRepository {
+	
+	public void salvar(Funcionario c);
+	public void deletar(int id);
+	public void atualizar(Funcionario c);
+	public List<Funcionario> lista();
+	public Funcionario getFuncionario(String cpf);
+
+
+}
